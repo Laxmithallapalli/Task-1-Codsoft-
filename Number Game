@@ -1,0 +1,57 @@
+import java.util.Scanner;
+import java.util.Random;
+
+public class NumberGuessingGame {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
+        int lowerBound = 1;
+        int upperBound = 100;
+        int maxAttempts = 5;
+        int totalRounds = 0;
+        int totalCorrectGuesses = 0;
+
+        System.out.println("Welcome to the Number Guessing Game!");
+
+        while (true) {
+            totalRounds++;
+            int targetNumber = random.nextInt(upperBound - lowerBound + 1) + lowerBound;
+            System.out.println("\nRound " + totalRounds + ":");
+            System.out.println("I'm thinking of a number between " + lowerBound + " and " + upperBound + ".");
+            System.out.println("You have " + maxAttempts + " attempts to guess it.");
+
+            for (int attempt = 1; attempt <= maxAttempts; attempt++) {
+                System.out.print("Attempt " + attempt + ": Enter your guess (or 'q' to quit): ");
+                String input = scanner.nextLine();
+
+                if (input.equalsIgnoreCase("q")) {
+                    System.out.println("Quitting the game.");
+                    return;
+                }
+
+                try {
+                    int guess = Integer.parseInt(input);
+
+                    if (guess < targetNumber) {
+                        System.out.println("Too low!");
+                    } else if (guess > targetNumber) {
+                        System.out.println("Too high!");
+                    } else {
+                        System.out.println("Congratulations! You guessed the number " + targetNumber + " in " + attempt + " attempts.");
+                        totalCorrectGuesses++;
+                        break;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Please enter a valid number.");
+                }
+            }
+
+            System.out.print("Do you want to play again? (yes/no): ");
+            String playAgain = scanner.nextLine();
+            if (!playAgain.equalsIgnoreCase("yes")) {
+                System.out.println("\nYou played " + totalRounds + " round(s) and guessed the number correctly " + totalCorrectGuesses + " time(s).");
+                return;
+            }
+        }
+    }
+}
